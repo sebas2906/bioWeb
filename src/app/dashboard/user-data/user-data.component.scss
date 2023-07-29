@@ -1,0 +1,93 @@
+@media only screen and (max-width: 600px) {
+    .info-label {
+        //font-weight: 600;
+        font-size: 15px;
+    }
+
+    .info-data {
+        text-align: center;
+        font-size: 40px;
+    }
+
+    .units-label {
+        font-size: 15px;
+    }
+
+    .info-label-mini {
+        //font-weight: 600;
+        font-size: 15px;
+    }
+
+    .info-data-mini {
+        font-size: 40px;
+    }
+
+    .units-label-mini {
+        font-size: 15px;
+    }
+    .info-data-nibp {
+        padding: 5px;
+        font-size: 35px;
+        text-align: center;
+    }
+ /*    .top-row-data{
+        flex-direction: column !important;
+    } */
+}
+
+@media only screen and (min-width: 601px) {
+    .info-label {
+        //font-weight: 600;
+        font-size: 15px;
+    }
+    
+    .info-data {
+        font-size: 50px;
+    }
+    .info-data-nibp {
+        font-size: 60px;
+        text-align: center;
+    }
+    
+    .units-label {
+        font-size: 15px;
+    }
+    
+    .info-label-mini {
+        //font-weight: 600;
+        font-size: 12px;
+    }
+    
+    .info-data-mini {
+        color: gray;
+        font-size: 30px;
+    }
+    
+    .units-label-mini {
+        font-size: 15px;
+    }
+/*     .top-row-data{
+        flex-direction: row !important;
+    } */
+}
+
+
+
+.sinal-label {
+    max-height: 24px;
+}
+
+.chart-section {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.chart-container-1 {
+    width: 100%;
+}
+
+canvas {
+    max-width: 100%;
+}
+

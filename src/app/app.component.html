@@ -1,0 +1,47 @@
+<router-outlet></router-outlet>
+<div class="alerts-container" *ngIf="alerts.length>0">
+    <!-- <pre>{{alerts|json}}</pre> -->
+    <ng-container *ngFor="let alert of alerts;let i = index">
+        <div *ngIf="alert.type=='error'"
+            class="alert alert-danger border-0 bg-danger alert-dismissible fade show py-2 animate__animated "
+            [ngClass]="{'animate__bounceIn':i==0}">
+            <div class="d-flex align-items-center">
+                <div class="font-35 text-white"><i class='bx bxs-message-square-x'></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="mb-0 text-white">{{alert.title}}</h6>
+                    <div class="text-white">{{alert.message}}</div>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div *ngIf="alert.type=='info'" class="alert alert-info border-0 bg-info alert-dismissible fade show py-2"
+            [ngClass]="{'animate__bounceIn':i==0}">
+            <div class="d-flex align-items-center">
+                <div class="font-35 text-dark"><i class='bx bx-info-square'></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="mb-0 text-dark">{{alert.title}}</h6>
+                    <div class="text-dark">{{alert.message}}</div>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div *ngIf="alert.type=='success'"
+            class="alert alert-success border-0 bg-success alert-dismissible fade show py-2"
+            [ngClass]="{'animate__bounceIn':i==0}">
+            <div class="d-flex align-items-center">
+                <div class="font-35 text-white"><i class='bx bxs-check-circle'></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="mb-0 text-white">{{alert.title}}</h6>
+                    <div class="text-white">{{alert.message}}</div>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </ng-container>
+</div>
+<div class="spinner-container" *ngIf="is_loading">
+    <div class="spinner-border"></div>
+</div>
