@@ -7,6 +7,7 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 import { DigitalMarketingComponent } from './digital-marketing/digital-marketing.component';
 import { HumanResourcesComponent } from './human-resources/human-resources.component';
 import { UserDataComponent } from './user-data/user-data.component';
+import { LoginGuard } from '../login.guard';
 
 const routes: Routes = [
   {
@@ -55,7 +56,8 @@ const routes: Routes = [
           title: 'Human Resources'
         }
       },
-    ]
+    ],
+    canActivate:[LoginGuard]
   }
 ];
 

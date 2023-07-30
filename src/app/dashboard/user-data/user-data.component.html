@@ -29,11 +29,13 @@
 				class="row row-cols-1 row-cols-md-3 row-cols-xl-3 g-0 row-group text-center border-top align-items-center justify-content-center">
 				<!-- <div class="row align-items-center justify-content-evenly align-items-center"> -->
 				<div class="col-6">
-					<div class="info-data-nibp"><sup class="info-label me-1">NIBP</sup>{{pm6750_data?.NIBP.sys_pressure}}<sub
+					<div class="info-data-nibp"><sup
+							class="info-label me-1">NIBP</sup>{{pm6750_data?.NIBP.sys_pressure}}<sub
 							class="units-label">mmHg</sub></div>
 				</div>
 				<div class="col-6">
-					<div class="info-data-nibp">{{pm6750_data?.NIBP.dia_pressure}}<sub class="units-label">mmHg</sub></div>
+					<div class="info-data-nibp">{{pm6750_data?.NIBP.dia_pressure}}<sub class="units-label">mmHg</sub>
+					</div>
 				</div>
 
 			</div>
@@ -43,25 +45,29 @@
 	<div class="col-12 col-lg-3 col-xl-3 d-flex">
 		<div class="card radius-10 overflow-hidden w-100">
 			<div class="card-body">
-
 				<div class="container-info p-2">
 					<div class="row justify-content-evenly mb-3 top-row-data">
 						<div class="col-auto">
-							<div class="info-data"><sup class="info-label me-1">HR</sup>{{pm6750_data?.ECG.ECG_status.heart_rate}}<sub
+							<div class="info-data"><sup
+									class="info-label me-1">HR</sup>{{pm6750_data?.ECG.ECG_status.heart_rate}}<sub
 									class="units-label">ppm</sub></div>
-							<div class="info-data"><sup class="info-label me-1">RR</sup>{{pm6750_data?.ECG.ECG_status.resp_rate}}<sub
+							<div class="info-data"><sup
+									class="info-label me-1">RR</sup>{{pm6750_data?.ECG.ECG_status.resp_rate}}<sub
 									class="units-label">bpm</sub></div>
-							<div class="info-data"><sup class="info-label me-1">SPO<sub>2</sub> </sup>{{pm6750_data?.SPO2.sat_value}}<sub
-									class="units-label">%</sub></div>
+							<div class="info-data"><sup class="info-label me-1">SPO<sub>2</sub>
+								</sup>{{pm6750_data?.SPO2.sat_value}}<sub class="units-label">%</sub></div>
 						</div>
 						<div class="col-auto">
-							<div class="info-data-mini"><sup class="info-label-mini me-1">Temp</sup>{{pm6750_data?.TEMP.value}}<sub
+							<div class="info-data-mini"><sup
+									class="info-label-mini me-1">Temp</sup>{{pm6750_data?.TEMP.value}}<sub
 									class="units-label-mini">°C</sub></div>
-							<div class="info-data-mini"><sup class="info-label-mini me-1">Pulso</sup>{{pm6750_data?.SPO2.pulse_rate}}<sub
+							<div class="info-data-mini"><sup
+									class="info-label-mini me-1">Pulso</sup>{{pm6750_data?.SPO2.pulse_rate}}<sub
 									class="units-label-mini">ppm</sub></div>
 						</div>
 					</div>
 				</div>
+
 				<!-- <pre>
 					{{pm6750_data?|json}}
 				</pre> -->
@@ -92,6 +98,23 @@
 						<tr>
 							<td><i class="bx bxs-circle me-2" style="color: black"></i>SPO2 estado</td>
 							<td>{{pm6750_data?.SPO2.status}}</td>
+						</tr>
+						<tr>
+							<td>Acciones: </td>
+							<td>
+								<div class="d-flex">
+									<div *ngIf="is_recording" class="me-2"
+										style="width: 20px; height: 20px; background-color: red; border-radius: 100%;">
+									</div>
+									<button (click)="startRecording()" class="btn btn-outline-primary me-2"><i
+											class="fadeIn animated bx bx-video-recording"></i></button>
+									<!-- <button class="btn btn-outline-primary me-2"><i
+										class="fadeIn animated bx bx-stop-circle"></i></button> -->
+									<button (click)="downloadRecord()" class="btn btn-outline-primary me-2"><i
+											class="fadeIn animated bx bx-download"></i></button>
+								</div>
+
+							</td>
 						</tr>
 					</tbody>
 				</table>

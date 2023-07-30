@@ -4,6 +4,7 @@ import { Router, Event, NavigationStart, NavigationEnd, NavigationError } from '
 import { SidebarService } from "./sidebar.service";
 
 import * as $ from 'jquery';
+import { QueryService } from 'src/app/services/query.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class SidebarComponent implements OnInit {
     public menuItems: any[];
 
   
-    constructor( public sidebarservice: SidebarService,private router: Router) {
+    constructor( public sidebarservice: SidebarService,private queryService:QueryService,private router: Router) {
 
         router.events.subscribe( (event: Event) => {
 
@@ -73,8 +74,23 @@ export class SidebarComponent implements OnInit {
     }
     
 
-    ngOnInit() {
+    async ngOnInit() {
         this.menuItems = ROUTES.filter(menuItem => menuItem);
+        let patients = (await this.queryService.getAccountInfo()).patients;
+        this.menuItems = this.menuItems.map(item=>{
+            if(item.title=='Dashboard'){
+                item.submenu=[];
+                if(patients.length){
+                    patients.forEach(p=>{
+                        let path={ path: '/dashboard/user-data', title: p.username, icon: 'bx bx-right-arrow-alt', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] };
+                        item.submenu.push(path);
+                    })
+                }
+               // { path: '/dashboard/user-data', title: 'Daniel Perez', icon: 'bx bx-right-arrow-alt', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
+            }
+            return item;
+        });
+        this.menuItems=[...this.menuItems];
         $.getScript('./assets/js/app-sidebar.js');
 
     }

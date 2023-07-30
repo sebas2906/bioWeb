@@ -11,152 +11,133 @@
 
 		</div>
 		<hr />
-		<h6 class="mb-0">ECG config</h6>
+		<h6 class="mb-0 section">ECG config</h6>
 		<hr />
+
 		<div class="row">
 			<div class="col-6">
 				<label class="form-label">Forma de onda:</label> <br>
-				<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2 me-2"><i
+				<button (click)="sendCommand(commands.ecg_waveform_en)" type="button"
+					class="btn btn-outline-secondary ctrl-panel-btn px-2 me-2"><i
 						class="bx bx-play-circle"></i></button>
-				<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
+				<button (click)="sendCommand(commands.ecg_waveform_dis)" type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
 						class="bx bx-pause-circle"></i></button>
 			</div>
 			<div class="col-6">
 				<label class="form-label">Parámetros:</label> <br>
-				<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2 me-2"><i
+				<button (click)="sendCommand(commands.ecg_params_en)" type="button"
+					class="btn btn-outline-secondary ctrl-panel-btn px-2 me-2"><i
 						class="bx bx-play-circle"></i></button>
-				<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-						class="bx bx-pause-circle"></i></button>
+				<button (click)="sendCommand(commands.ecg_params_dis)" type="button"
+					class="btn btn-outline-secondary ctrl-panel-btn px-2"><i class="bx bx-pause-circle"></i></button>
 			</div>
 			<div class="mb-3"></div>
 			<div class="col-12">
 				<label class="form-label">Número de derivaciones:</label>
-				<select aria-label="Default select example" class="form-select mb-3">
+				<select (change)="sendCommand($event.target.value)" aria-label="Default select example"
+					class="form-select mb-3">
 					<option selected="">Seleccionar derivaciones</option>
-					<option value="0">3 derivaciones</option>
-					<option value="1">5 derivaciones</option>
+					<option [value]="commands.ecg_lead_3">3 derivaciones</option>
+					<option [value]="commands.ecg_lead_5">5 derivaciones</option>
 				</select>
 			</div>
 			<div class="col-12">
 				<label class="form-label">Ganancia:</label>
-				<select aria-label="Default select example" class="form-select mb-3">
+				<select (change)="sendCommand($event.target.value)" aria-label="Default select example"
+					class="form-select mb-3">
 					<option selected="">Seleccionar ganancia</option>
-					<option value="0">x0.25</option>
-					<option value="1">x0.5</option>
-					<option value="2">x1</option>
-					<option value="3">x2</option>
+					<option [value]="commands.ecg_wave_025_gain">x0.25</option>
+					<option [value]="commands.ecg_wave_05_gain">x0.5</option>
+					<option [value]="commands.ecg_wave_1_gain">x1</option>
+					<option [value]="commands.ecg_wave_2_gain">x2</option>
 				</select>
 			</div>
 			<div class="col-12">
 				<label class="form-label">Modo de filtrado:</label>
-				<select aria-label="Default select example" class="form-select mb-3">
+				<select (change)="sendCommand($event.target.value)" aria-label="Default select example"
+					class="form-select mb-3">
 					<option selected="">Seleccionar modo</option>
-					<option value="0">operación</option>
-					<option value="1">monitor</option>
-					<option value="2">diagnóstico</option>
+					<option [value]="commands.ecg_filter_mode_op">operación</option>
+					<option [value]="commands.ecg_filter_mode_mo">monitor</option>
+					<option [value]="commands.ecg_filter_mode_di">diagnóstico</option>
 				</select>
 			</div>
-			<hr />
-			<h6 class="mb-0">NIBP config</h6>
-			<hr />
-			<div class="row">
-				<div class="col-auto">
-					<label class="form-label">Parámetros:</label> <br>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-play-circle"></i></button>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-pause-circle"></i></button>
-				</div>
-				<div class="col-auto">
-					<label class="form-label">Modo paciente:</label>
-					<select aria-label="Default select example" class="form-select mb-3">
-						<option selected="">Seleccionar tipo</option>
-						<option value="0">Adulto</option>
-						<option value="1">Niño</option>
-					</select>
-				</div>
-				<div class="col-auto">
-					<label class="form-label">Presión brazalete:</label>
-					<input type="number" placeholder="(0 - 300 mmHg)" class="form-control mb-3">
-				</div>
-				<div class="col-auto">
-					<label class="form-label">Modo de filtrado:</label>
-					<select aria-label="Default select example" class="form-select mb-3">
-						<option selected="">Seleccionar modo</option>
-						<option value="0">operación</option>
-						<option value="1">monitor</option>
-						<option value="2">diagnóstico</option>
-					</select>
-				</div>
+		</div>
+
+		<hr />
+		<h6 class="mb-3 section">NIBP config</h6>
+		<hr />
+		<div class="row">
+			<div class="col-auto">
+				<label class="form-label">Parámetros:</label> <br>
+				<button (click)="sendCommand(commands.nibp_params_en)" type="button"
+					class="btn btn-outline-secondary ctrl-panel-btn px-2 me-2"><i
+						class="bx bx-play-circle"></i></button>
+				<button (click)="sendCommand(commands.nibp_params_dis)" type="button"
+					class="btn btn-outline-secondary ctrl-panel-btn px-2"><i class="bx bx-pause-circle"></i></button>
 			</div>
-			<hr />
-			<h6 class="mb-0">SPO2 y Temp config</h6>
-			<hr />
-			<div class="row">
-				<div class="col-auto">
-					<label class="form-label">Parámetros SPO2:</label> <br>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-play-circle"></i></button>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-pause-circle"></i></button>
-				</div>
-				<div class="col-auto">
-					<label class="form-label">Forma de onda SPO2:</label> <br>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-play-circle"></i></button>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-pause-circle"></i></button>
-				</div>
-				<div class="col-auto">
-					<label class="form-label">Parámetros Temperatura:</label> <br>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-play-circle"></i></button>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-pause-circle"></i></button>
-				</div>
+			<div class="col-auto">
+				<label class="form-label">Modo paciente:</label>
+				<select (change)="sendCommand($event.target.value)" class="form-select mb-3">
+					<option selected="">Seleccionar tipo</option>
+					<option [value]="commands.nibp_patient_mode_adult">Adulto</option>
+					<option [value]="commands.nibp_patient_mode_child">Niño</option>
+				</select>
 			</div>
-			<hr />
-			<h6 class="mb-0">SPO2 config</h6>
-			<hr />
-			<div class="row">
-				<div class="col-auto">
-					<label class="form-label">Parámetros:</label> <br>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-play-circle"></i></button>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-pause-circle"></i></button>
-				</div>
-				<div class="col-auto">
-					<label class="form-label">Forma de onda:</label> <br>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-play-circle"></i></button>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-pause-circle"></i></button>
-				</div>
+			<div class="col-12">
+				<label class="form-label">Presión brazalete:</label>
+				<input type="number" placeholder="(0 - 300 mmHg)" class="form-control mb-3">
 			</div>
-			<hr />
-			<h6 class="mb-0">RESP config</h6>
-			<hr />
-			<div class="row">
-				<div class="col-auto">
-					<label class="form-label">Ganancia:</label> <br>
-					<select aria-label="Default select example" class="form-select mb-3">
-						<option selected="">Seleccionar ganancia</option>
-						<option value="0">x0.25</option>
-						<option value="1">x0.5</option>
-						<option value="2">x1</option>
-						<option value="3">x2</option>
-					</select>
-				</div>
-				<div class="col-auto">
-					<label class="form-label">Forma de onda:</label> <br>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-play-circle"></i></button>
-					<button type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
-							class="bx bx-pause-circle"></i></button>
-				</div>
+		</div>
+		<hr />
+		<h6 class="mb-3 section">SPO2 y Temp config</h6>
+		<hr />
+		<div class="row mb-3">
+			<div class="col-6">
+				<label class="form-label">Parámetros SPO2:</label> <br>
+				<button (click)="sendCommand(commands.spo2_params_en)" type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2 me-2"><i
+						class="bx bx-play-circle"></i></button>
+				<button (click)="sendCommand(commands.spo2_params_dis)" type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
+						class="bx bx-pause-circle"></i></button>
 			</div>
-			<hr />
+			<div class="col-6">
+				<label class="form-label">Forma de onda SPO2:</label> <br>
+				<button (click)="sendCommand(commands.spo2_waveform_en)" type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2 me-2"><i
+						class="bx bx-play-circle"></i></button>
+				<button (click)="sendCommand(commands.spo2_waveform_dis)" type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
+						class="bx bx-pause-circle"></i></button>
+			</div>
+			<div class="col-auto">
+				<label class="form-label">Parámetros Temperatura:</label> <br>
+				<button (click)="sendCommand(commands.temp_params_en)" type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2 me-2"><i
+						class="bx bx-play-circle"></i></button>
+				<button (click)="sendCommand(commands.temp_params_dis)" type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
+						class="bx bx-pause-circle"></i></button>
+			</div>
+		</div>
+		<hr />
+		<h6 class="mb-3 section">RESP config</h6>
+		<hr />
+		<div class="row mb-3">
+			<div class="col-auto">
+				<label class="form-label">Ganancia:</label> <br>
+				<select (change)="sendCommand($event.target.value)" aria-label="Default select example" class="form-select mb-3">
+					<option selected="">Seleccionar ganancia</option>
+					<option [value]="commands.resp_wave_gain_025">x0.25</option>
+					<option [value]="commands.resp_wave_gain_05">x0.5</option>
+					<option [value]="commands.resp_wave_gain_1">x1</option>
+					<option [value]="commands.resp_wave_gain_2">x2</option>
+				</select>
+			</div>
+			<div class="col-auto">
+				<label class="form-label">Forma de onda:</label> <br>
+				<button (click)="sendCommand(commands.resp_waveform_en)" type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2 me-2"><i
+						class="bx bx-play-circle"></i></button>
+				<button (click)="sendCommand(commands.resp_waveform_dis)" type="button" class="btn btn-outline-secondary ctrl-panel-btn px-2"><i
+						class="bx bx-pause-circle"></i></button>
+			</div>
+		</div>
+		<!-- <hr />
 			<h6 class="mb-0">Theme Styles</h6>
 			<hr />
 			<div class="d-flex align-items-center justify-content-between">
@@ -242,7 +223,7 @@
 				</div>
 			</div>
 
+ -->
 
-		</div>
 	</div>
 	<!--end switcher-->

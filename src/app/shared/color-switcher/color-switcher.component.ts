@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PM6750Commands } from 'src/app/dashboard/user-data/types';
+import { Pm6750Service } from 'src/app/services/pm6750.service';
 
 @Component({
   selector: 'app-color-switcher',
@@ -7,40 +9,74 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ColorSwitcherComponent implements OnInit {
 
-  constructor() { }
+  public commands: PM6750Commands = {
+    ecg_params_dis: '55aa040101f9',
+    ecg_params_en: '55aa040100fa',
+    nibp_params_dis: '55aa040200f9',
+    nibp_params_en: '55aa040201f8',
+    spo2_params_en: '55aa040300f8',
+    spo2_params_dis: '55aa040301f7',
+    temp_params_en: '55aa040400f7',
+    temp_params_dis: '55aa040401f6',
+    ecg_lead_3: '55aa040502f4',
+    ecg_lead_5: '55aa040504f2',
+    ecg_wave_025_gain: '55aa040701f3',
+    ecg_wave_05_gain: '55aa040702f2',
+    ecg_wave_1_gain: '55aa040703f1',
+    ecg_wave_2_gain: '55aa040704f0',
+    ecg_filter_mode_op: '55aa040801f2',
+    ecg_filter_mode_mo: '55aa040802f1',
+    ecg_filter_mode_di: '55aa040803f0',
+    nibp_patient_mode_adult: '55aa040901f1',
+    nibp_patient_mode_child: '55aa040902f0',
+    nibp_pressure_header: '55aa040a',
+    resp_wave_gain_025: '55aa040f01fb',
+    resp_wave_gain_05: '55aa040f02fa',
+    resp_wave_gain_1: '55aa040f03f9',
+    resp_wave_gain_2: '55aa040f04f8',
+    ecg_waveform_en: '55aa04fb0000',
+    ecg_waveform_dis: '55aa04fb01ff',
+    spo2_waveform_en: '55aa04fe00fd',
+    spo2_waveform_dis: '55aa04fe01fc',
+    resp_waveform_en: '55aa04ff00fc',
+    resp_waveform_dis: '55aa04ff01fb',
+  }
+
+  constructor(private pm6750Service:Pm6750Service) { }
 
   ngOnInit() {
 
-    $(".switcher-btn").on("click", function() {
+    $(".switcher-btn").on("click", function () {
       $(".switcher-wrapper").toggleClass("switcher-toggled")
-    }), $(".close-switcher").on("click", function() {
+    }), $(".close-switcher").on("click", function () {
       $(".switcher-wrapper").removeClass("switcher-toggled")
-    }), $("#lightmode").on("click", function() {
+    }), $("#lightmode").on("click", function () {
       $("html").attr("class", "light-theme")
-    }), $("#darkmode").on("click", function() {
+    }), $("#darkmode").on("click", function () {
       $("html").attr("class", "dark-theme")
-    }), $("#semidark").on("click", function() {
+    }), $("#semidark").on("click", function () {
       $("html").attr("class", "semi-dark")
-    }), $("#minimaltheme").on("click", function() {
+    }), $("#minimaltheme").on("click", function () {
       $("html").attr("class", "minimal-theme")
-    }), $("#headercolor1").on("click", function() {
+    }), $("#headercolor1").on("click", function () {
       $("html").addClass("color-header headercolor1"), $("html").removeClass("headercolor2 headercolor3 headercolor4 headercolor5 headercolor6 headercolor7 headercolor8")
-    }), $("#headercolor2").on("click", function() {
+    }), $("#headercolor2").on("click", function () {
       $("html").addClass("color-header headercolor2"), $("html").removeClass("headercolor1 headercolor3 headercolor4 headercolor5 headercolor6 headercolor7 headercolor8")
-    }), $("#headercolor3").on("click", function() {
+    }), $("#headercolor3").on("click", function () {
       $("html").addClass("color-header headercolor3"), $("html").removeClass("headercolor1 headercolor2 headercolor4 headercolor5 headercolor6 headercolor7 headercolor8")
-    }), $("#headercolor4").on("click", function() {
+    }), $("#headercolor4").on("click", function () {
       $("html").addClass("color-header headercolor4"), $("html").removeClass("headercolor1 headercolor2 headercolor3 headercolor5 headercolor6 headercolor7 headercolor8")
-    }), $("#headercolor5").on("click", function() {
+    }), $("#headercolor5").on("click", function () {
       $("html").addClass("color-header headercolor5"), $("html").removeClass("headercolor1 headercolor2 headercolor4 headercolor3 headercolor6 headercolor7 headercolor8")
-    }), $("#headercolor6").on("click", function() {
+    }), $("#headercolor6").on("click", function () {
       $("html").addClass("color-header headercolor6"), $("html").removeClass("headercolor1 headercolor2 headercolor4 headercolor5 headercolor3 headercolor7 headercolor8")
-    }), $("#headercolor7").on("click", function() {
+    }), $("#headercolor7").on("click", function () {
       $("html").addClass("color-header headercolor7"), $("html").removeClass("headercolor1 headercolor2 headercolor4 headercolor5 headercolor6 headercolor3 headercolor8")
-    }), $("#headercolor8").on("click", function() {
+    }), $("#headercolor8").on("click", function () {
       $("html").addClass("color-header headercolor8"), $("html").removeClass("headercolor1 headercolor2 headercolor4 headercolor5 headercolor6 headercolor7 headercolor3")
     })
-    
+
+
     // sidebar colors 
 
 
@@ -68,12 +104,12 @@ export class ColorSwitcherComponent implements OnInit {
     function theme4() {
       $('html').attr('class', 'color-sidebar sidebarcolor4');
     }
-	
-	function theme5() {
+
+    function theme5() {
       $('html').attr('class', 'color-sidebar sidebarcolor5');
     }
-	
-	function theme6() {
+
+    function theme6() {
       $('html').attr('class', 'color-sidebar sidebarcolor6');
     }
 
@@ -84,8 +120,11 @@ export class ColorSwitcherComponent implements OnInit {
     function theme8() {
       $('html').attr('class', 'color-sidebar sidebarcolor8');
     }
-	
-	
+
+  }
+
+   sendCommand(command:string){
+    this.pm6750Service.worker.postMessage({command});
   }
 
 }
