@@ -10,12 +10,12 @@ import { CONTENT_ROUTES } from "./shared/routes/content-layout.routes";
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard/default',
+    redirectTo: 'auth/sign-in',
     pathMatch: 'full',
   },
   { path: '', component: FullLayoutComponent, data: { title: 'full Views' }, children: Full_ROUTES },
   { path: '', component: ContentLayoutComponent, data: { title: 'content Views' }, children: CONTENT_ROUTES },
-  { path: '**', redirectTo: 'dashboard/default' }
+  { path: '**', redirectTo: 'auth/sign-in' }
 ];
 
 @NgModule({

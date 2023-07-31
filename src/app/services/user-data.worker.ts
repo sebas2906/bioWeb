@@ -272,9 +272,9 @@ function limitBufferRange(buffer, value, max_values) {
 }
 
 function initMQTT() {
-  client = (mqtt).connect('ws://mqtt.eclipseprojects.io/mqtt', {
-    host: 'mqtt.eclipseprojects.io',
-    port: 80
+  client = (mqtt).connect('wss://mqtt.eclipseprojects.io/mqtt', {
+   // host: 'mqtt.eclipseprojects.io',
+    port: 443//80
   })
   client.on('connect', function () {
     console.log('%cMQTT server conectado', 'color: green');
