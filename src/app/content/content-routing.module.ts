@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { GridSystemComponent } from './grid-system/grid-system.component';
 import { TypographyComponent } from './typography/typography.component';
 import { TextUtilitiesComponent } from './text-utilities/text-utilities.component';
+import { LoginGuard } from '../login.guard';
 
 
 const routes: Routes = [
@@ -31,7 +32,8 @@ const routes: Routes = [
           title: 'Sales'
         }
       },
-    ]
+    ],
+    canActivate:[LoginGuard]
   }
 ];
 

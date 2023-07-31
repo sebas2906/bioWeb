@@ -14,8 +14,9 @@
         <!-- Sidebar Header Ends -->
     <div class="sidebar-content" [perfectScrollbar]>
         <ul class="navigation">
+           
             <!-- First level menu -->
-            <li *ngFor="let menuItem of menuItems" [ngClass]="[menuItem.class]" [routerLinkActive]="menuItem.submenu.length != 0 ? '' : 'active'"
+            <li *ngFor="let menuItem of menuItems;let i=index" [ngClass]="[menuItem.class]" [routerLinkActive]="menuItem.submenu.length != 0 ? '' : 'active'"
                 [routerLinkActiveOptions]="{exact: true}">
                 <a [routerLink]="menuItem.class === '' ? [menuItem.path] : null" *ngIf="!menuItem.isExternalLink; else externalLinkBlock">
                     <i [ngClass]="[menuItem.icon]"></i>
@@ -64,6 +65,12 @@
                         </ul>
                     </li>
                 </ul>
+            </li>
+            <li>
+                <a (click)="closeSession()">
+                    <i class="bx bx-window-close"></i>
+                    <span class="menu-title">Cerrar sesión</span>
+                </a>
             </li>
         </ul>
     </div>

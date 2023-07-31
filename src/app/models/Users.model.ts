@@ -2,8 +2,10 @@ export interface User{
     email?:string,
     patients?:User[],
     id?:string,
-    username?:string,
-    rol?:boolean
+    name?:string,
+    last_name:string,
+    rol?:boolean,
+    device_id?:string
 }
 
 export interface Token{

@@ -15,7 +15,7 @@ export class SignInComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private queryService:QueryService) {
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
@@ -32,9 +32,10 @@ export class SignInComponent implements OnInit {
 
   async login() {
     console.log(this.loginForm);
-    const {username,password}=this.loginForm.value;
-    this.queryService.login(username,password).then(resp=>{
+    const {email,password}=this.loginForm.value;
+    this.queryService.login(email,password).then(resp=>{
       console.log('Acceso permitido: ',resp);
+      this.router.navigate(['user-profile']);
     });
   }
 

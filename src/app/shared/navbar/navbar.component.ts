@@ -1,5 +1,7 @@
-import { Component , OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SidebarService } from '../sidebar/sidebar.service';
+import { QueryService } from 'src/app/services/query.service';
+import { User } from 'src/app/models/Users.model';
 
 
 @Component({
@@ -8,14 +10,22 @@ import { SidebarService } from '../sidebar/sidebar.service';
     styleUrls: ['./navbar.component.scss']
 })
 
-export class NavbarComponent implements OnInit{
+export class NavbarComponent implements OnInit {
 
-    constructor(public sidebarservice: SidebarService) { }
-        
+    user: User;
+
+    constructor(public sidebarservice: SidebarService, private queryService: QueryService) {
+        this.loadUserData();
+    }
+
+    async loadUserData() {
+        this.user = await this.queryService.getAccountInfo();
+    }
+
     toggleSidebar() {
         this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
     }
-    
+
     getSideBarState() {
         return this.sidebarservice.getSidebarState();
     }
@@ -30,10 +40,10 @@ export class NavbarComponent implements OnInit{
         $(document).ready(function () {
             $(".mobile-search-icon").on("click", function () {
                 $(".search-bar").addClass("full-search-bar")
-            }), 
-            $(".search-close").on("click", function () {
-                $(".search-bar").removeClass("full-search-bar")
-            })
+            }),
+                $(".search-close").on("click", function () {
+                    $(".search-bar").removeClass("full-search-bar")
+                })
         });
 
     }

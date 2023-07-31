@@ -62,7 +62,7 @@ const routes: Routes = [
           title: 'Lock Screen'
         }
       },
-    ]
+    ],
   }
 ];
 

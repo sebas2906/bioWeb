@@ -16,6 +16,7 @@ import { NavsComponent } from './navs/navs.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { SpinnersComponent } from './spinners/spinners.component';
+import { LoginGuard } from '../login.guard';
 
 const routes: Routes = [
   {
@@ -126,7 +127,8 @@ const routes: Routes = [
           title: 'Avtars Chips'
         }
       }
-    ]
+    ],
+    canActivate:[LoginGuard]
   }
 ];
 

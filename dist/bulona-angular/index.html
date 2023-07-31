@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <title>Monitor</title>
+  <base href="./">
+  <!-- https://codervent.com/bulona-angular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--favicon-->
+	<!-- <link rel="icon" href="assets/favicon.ico" type="image/png" /> -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="assets/vendor/pace/themes/blue/pace-theme-minimal.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="assets/vendor/pace/themes/blue/pace-theme-minimal.css"></noscript>
+  <style type="text/css">
+    .pace {
+      -webkit-pointer-events: none;
+      pointer-events: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    .pace-inactive {
+      display: none;
+    }
+
+    .pace .pace-progress {
+      background: #0d6efd;
+      position: fixed;
+      z-index: 2000;
+      top: 0;
+      right: 100%;
+      width: 100%;
+      height: 3px;
+    }
+
+    .page-loading {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      z-index: -1;
+    }
+
+    .loading-icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -19px;
+      margin-top: -19px;
+    }
+
+    app-root:empty~.page-loading {
+      opacity: 1;
+      z-index: 1;
+    }
+
+  </style>
+<style>:root{--bs-blue:#008cff;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#fd3550;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#15ca20;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--bs-white:#fff;--bs-gray:#6c757d;--bs-gray-dark:#343a40;--bs-gray-100:#f8f9fa;--bs-gray-200:#e9ecef;--bs-gray-300:#dee2e6;--bs-gray-400:#ced4da;--bs-gray-500:#adb5bd;--bs-gray-600:#6c757d;--bs-gray-700:#495057;--bs-gray-800:#343a40;--bs-gray-900:#212529;--bs-primary:#008cff;--bs-secondary:#6c757d;--bs-success:#15ca20;--bs-info:#0dcaf0;--bs-warning:#ffc107;--bs-danger:#fd3550;--bs-light:#f8f9fa;--bs-dark:#212529;--bs-primary-rgb:0, 140, 255;--bs-secondary-rgb:108, 117, 125;--bs-success-rgb:21, 202, 32;--bs-info-rgb:13, 202, 240;--bs-warning-rgb:255, 193, 7;--bs-danger-rgb:253, 53, 80;--bs-light-rgb:248, 249, 250;--bs-dark-rgb:33, 37, 41;--bs-white-rgb:255, 255, 255;--bs-black-rgb:0, 0, 0;--bs-body-color-rgb:76, 82, 88;--bs-body-bg-rgb:244, 244, 244;--bs-font-sans-serif:Roboto, sans-serif;--bs-font-monospace:SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;--bs-gradient:linear-gradient(180deg, rgba(255, 255, 255, .15), rgba(255, 255, 255, 0));--bs-body-font-family:var(--bs-font-sans-serif);--bs-body-font-size:1rem;--bs-body-font-weight:400;--bs-body-line-height:1.5;--bs-body-color:#4c5258;--bs-body-bg:#f4f4f4}*,*:before,*:after{box-sizing:border-box}@media (prefers-reduced-motion: no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:var(--bs-body-font-family);font-size:var(--bs-body-font-size);font-weight:var(--bs-body-font-weight);line-height:var(--bs-body-line-height);color:var(--bs-body-color);text-align:var(--bs-body-text-align);background-color:var(--bs-body-bg);-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:rgba(0,0,0,0)}@keyframes spinner-border{to{transform:rotate(360deg)}}.spinner-border{display:inline-block;width:2rem;height:2rem;vertical-align:-.125em;border:.25em solid currentColor;border-right-color:transparent;border-radius:50%;animation:.75s linear infinite spinner-border}@media (prefers-reduced-motion: reduce){.spinner-border{animation-duration:1.5s}}.text-primary{color:#008cff!important}body{font-size:14px;color:#4c5258;letter-spacing:.5px;overflow-x:hidden}@charset "UTF-8";:root{--animate-duration:1s;--animate-delay:1s;--animate-repeat:1}</style><link rel="stylesheet" href="styles.c2accea20e1cc6f1.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.c2accea20e1cc6f1.css"></noscript></head>
+<body>
+  <app-root></app-root>
+
+    <div class="page-loading">
+      <div class="spinner-border text-primary loading-icon" role="status">
+      </div>
+    </div>
+<script src="runtime.44f96f7c045ec977.js" type="module"></script><script src="polyfills.39394df1a461369e.js" type="module"></script><script src="scripts.7d01dd8d2b9d0d63.js" defer></script><script src="main.dceb95301a090938.js" type="module"></script>
+
+</body></html>

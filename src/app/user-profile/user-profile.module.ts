@@ -5,6 +5,7 @@ import { UserProfileRoutingModule } from './user-profile-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { UserProfileComponent } from './user-profile.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { UserProfileComponent } from './user-profile.component';
   imports: [
     CommonModule,
     UserProfileRoutingModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule
   ]
 })
 export class UserProfileModule { }

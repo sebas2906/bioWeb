@@ -2,6 +2,9 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { PM6750GeneralData } from './types';
 import { Pm6750Service } from 'src/app/services/pm6750.service';
+import { ActivatedRoute } from '@angular/router';
+import { User } from 'src/app/models/Users.model';
+import { QueryService } from 'src/app/services/query.service';
 
 @Component({
   selector: 'app-user-data',
@@ -14,9 +17,10 @@ export class UserDataComponent implements OnInit, AfterViewInit {
   private offscreenCanvas = undefined;
 
   public pm6750_data: PM6750GeneralData;
-  public is_recording=false;
+  public is_recording = false;
+  public user: User;
 
-  constructor(private pm6750Service: Pm6750Service) { }
+  constructor(private pm6750Service: Pm6750Service, private activatedRoute: ActivatedRoute, private queryService: QueryService) { }
 
   ngOnInit(): void {
     //  $.getScript("./assets/js/deafult-dashboard.js")
@@ -27,7 +31,7 @@ export class UserDataComponent implements OnInit, AfterViewInit {
       this.pm6750Service.worker.onmessage = ({ data }) => {
         if (data?.download) {
           console.log('...descargando data: ', data.data);
-          var encodedUri = encodeURI('data:text/csv;charset=utf-8,'+JSON.parse(data.data));
+          var encodedUri = encodeURI('data:text/csv;charset=utf-8,' + JSON.parse(data.data));
           window.open(encodedUri);
           return;
         }
@@ -187,12 +191,24 @@ export class UserDataComponent implements OnInit, AfterViewInit {
       this.pm6750Service.worker.postMessage({ _canvas: this.offscreenCanvas[0], _config: config[0], width: this.card_width }, [this.offscreenCanvas[0]]);
       this.pm6750Service.worker.postMessage({ _canvas: this.offscreenCanvas[1], _config: config[1], width: this.card_width }, [this.offscreenCanvas[1]]);
       this.pm6750Service.worker.postMessage({ _canvas: this.offscreenCanvas[2], _config: config[2], width: this.card_width }, [this.offscreenCanvas[2]]);
+      this.loadUserDevice();
 
     }
   }
 
+  async loadUserDevice() {
+    let p = this.activatedRoute.snapshot.params
+    if (p['user_id']) {
+      this.user = await this.queryService.getUserInfo(p['user_id']);
+      console.log(`Información de paciente ${p['user_id']}: `, this.user);
+      if (this.user?.device_id) {
+        this.pm6750Service.worker.postMessage({ device_id: this.user.device_id });
+      }
+    }
+  }
+
   startRecording() {
-    this.is_recording=true;
+    this.is_recording = true;
     this.pm6750Service.worker.postMessage({ save: false, record: true });
   }
 
@@ -201,7 +217,7 @@ export class UserDataComponent implements OnInit, AfterViewInit {
   } */
 
   downloadRecord() {
-    this.is_recording=false;
+    this.is_recording = false;
     this.pm6750Service.worker.postMessage({ save: true, record: false });
   }
 

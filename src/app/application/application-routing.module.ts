@@ -7,6 +7,7 @@ import { EmailappComponent } from './emailapp/emailapp.component';
 import { FileManagerComponent } from './file-manager/file-manager.component';
 import { FullcalendarComponent } from './fullcalendar/fullcalendar.component';
 import { InvoiceComponent } from './invoice/invoice.component';
+import { LoginGuard } from '../login.guard';
 
 const routes: Routes = [
     {
@@ -61,7 +62,8 @@ const routes: Routes = [
             title: 'calendar'
           }
         },
-      ]
+      ],
+      canActivate:[LoginGuard]
   }
 ];
 

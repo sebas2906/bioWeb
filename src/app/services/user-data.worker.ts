@@ -12,10 +12,10 @@ let last_package = '';
 let chart = [];
 let extended_buffer = [[], [], [], [], []];
 let canvas = [];
-let client:any;
+let client: any;
 
-let recorded_data=[];
-let is_recording=false;
+let recorded_data = [];
+let is_recording = false;
 
 let pm6750_data: PM6750GeneralData = {
   ECG: {
@@ -73,6 +73,8 @@ let pm6750_data: PM6750GeneralData = {
 //let canvas_saved = undefined;
 let chart_counter = 0;
 let binary_status = '';
+let topic_subscribed = '/sensor/pm6750';
+
 Chart.register(...registerables);
 
 initMQTT();
@@ -81,22 +83,34 @@ addEventListener('message', async ({ data }) => {
   console.log('WEB WORKER')
   /*  const response = `worker response to ${data}`;
    postMessage(response); */
-  const { _canvas, _config, width, command, record, save } = data;
-  if(save){
-    is_recording=false;
-    if(recorded_data.length==0) return;
+  const { _canvas, _config, width, command, record, save, device_id } = data;
+  if (device_id) {
+    client.unsubscribe(topic_subscribed);
+    topic_subscribed='/sensor/pm6750/'+device_id;
+    client.subscribe(topic_subscribed, function (err) {
+      if (!err) {
+        console.log('Nuevo topico suscrito: ',topic_subscribed);
+        // client.publish('presence', 'Hello mqtt')
+      }
+    })
+
+    return;
+  }
+  if (save) {
+    is_recording = false;
+    if (recorded_data.length == 0) return;
     const csv = await json2csv(recorded_data);
-    console.log('csv: ',csv)
-    postMessage({download:true, data:JSON.stringify(csv)});
-    recorded_data=[];
+    console.log('csv: ', csv)
+    postMessage({ download: true, data: JSON.stringify(csv) });
+    recorded_data = [];
     return;
   }
-  if(record){
-    is_recording=true;
+  if (record) {
+    is_recording = true;
     return;
   }
-  if(command || command==''){
-    console.log('... enviando comando MQTT ',command);
+  if (command || command == '') {
+    console.log('... enviando comando MQTT ', command);
     client.publish('/esp32', command);
     return;
   }
@@ -264,11 +278,11 @@ function initMQTT() {
   })
   client.on('connect', function () {
     console.log('%cMQTT server conectado', 'color: green');
-    client.subscribe("/sensor/ecg007", function (err) {
+   /*  client.subscribe("/sensor/ecg007", function (err) {
       if (!err) {
         // client.publish('presence', 'Hello mqtt')
       }
-    })
+    }) */
     client.subscribe("/sensor/pm6750", function (err) {
       if (!err) {
         // client.publish('presence', 'Hello mqtt')
@@ -277,12 +291,12 @@ function initMQTT() {
   });
   client.on('message', async (topic, message) => {
     switch (topic) {
-      case '/sensor/pm6750':
+      case topic_subscribed:
         // Aquí tienes los datos en formato de bytes
 
         // Convierte los datos de bytes a una cadena de caracteres en hexadecimal
         const hexString = bytesToHexString(message);
-       // console.log(hexString)
+        // console.log(hexString)
         // console.log(message.toString());
         parsePM6750Data(hexString, (data) => {
           if (!data) return;
@@ -300,10 +314,10 @@ function initMQTT() {
               pm6750_data.ECG.ECG_data.aVF = data[5];
               pm6750_data.ECG.ECG_data.V = data[6];
               pm6750_data.ECG.ECG_data.Sum = sumatory;
-              if(is_recording){
+              if (is_recording) {
                 recorded_data.push({
-                  data:sumatory,
-                  timestamp:(new Date()).getTime()
+                  data: sumatory,
+                  timestamp: (new Date()).getTime()
                 });
               }
               break;
@@ -323,7 +337,7 @@ function initMQTT() {
             case 3://NIBP Params
               data.shift();
               binary_status = convertToBinary(data[0]);
-              let patient_mode = binary_status.slice(((binary_status.length - 1) - 1),((binary_status.length - 1) +1));//bit 0 y 1
+              let patient_mode = binary_status.slice(((binary_status.length - 1) - 1), ((binary_status.length - 1) + 1));//bit 0 y 1
               if (patient_mode == '00') {
                 pm6750_data.NIBP.patient_mode = 'Adulto';
               } else if (patient_mode == '01') {

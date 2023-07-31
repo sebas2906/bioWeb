@@ -5,6 +5,7 @@ import { SidebarService } from "./sidebar.service";
 
 import * as $ from 'jquery';
 import { QueryService } from 'src/app/services/query.service';
+import { User } from 'src/app/models/Users.model';
 
 
 @Component({
@@ -13,23 +14,23 @@ import { QueryService } from 'src/app/services/query.service';
 })
 
 export class SidebarComponent implements OnInit {
-    
+
     public menuItems: any[];
 
-  
-    constructor( public sidebarservice: SidebarService,private queryService:QueryService,private router: Router) {
 
-        router.events.subscribe( (event: Event) => {
+    constructor(public sidebarservice: SidebarService, private queryService: QueryService, private router: Router) {
+
+        router.events.subscribe((event: Event) => {
 
             if (event instanceof NavigationStart) {
                 // Show loading indicator
             }
 
-            if (event instanceof NavigationEnd && $(window).width() < 1025 && ( document.readyState == 'complete' || false ) ) {
+            if (event instanceof NavigationEnd && $(window).width() < 1025 && (document.readyState == 'complete' || false)) {
 
                 this.toggleSidebar();
                 // Hide loading indicator
-               
+
             }
 
             if (event instanceof NavigationError) {
@@ -42,14 +43,14 @@ export class SidebarComponent implements OnInit {
 
     }
 
-        
+
     toggleSidebar() {
         this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
-        
+
         if ($(".wrapper").hasClass("nav-collapsed")) {
             // unpin sidebar when hovered
             $(".wrapper").removeClass("nav-collapsed");
-            $(".sidebar-wrapper").unbind( "hover");
+            $(".sidebar-wrapper").unbind("hover");
         } else {
             $(".wrapper").addClass("nav-collapsed");
             $(".sidebar-wrapper").hover(
@@ -60,7 +61,7 @@ export class SidebarComponent implements OnInit {
                     $(".wrapper").removeClass("sidebar-hovered");
                 }
             )
-      
+
         }
 
     }
@@ -72,27 +73,40 @@ export class SidebarComponent implements OnInit {
     hideSidebar() {
         this.sidebarservice.setSidebarState(true);
     }
-    
 
-    async ngOnInit() {
+
+    ngOnInit() {
+        this.queryService.onUpdateUserData().subscribe(resp => {
+            this.initMenu();
+        })
+        this.initMenu();
+        $.getScript('./assets/js/app-sidebar.js');
+    }
+
+    private async initMenu() {
         this.menuItems = ROUTES.filter(menuItem => menuItem);
-        let patients = (await this.queryService.getAccountInfo()).patients;
-        this.menuItems = this.menuItems.map(item=>{
-            if(item.title=='Dashboard'){
-                item.submenu=[];
-                if(patients.length){
-                    patients.forEach(p=>{
-                        let path={ path: '/dashboard/user-data', title: p.username, icon: 'bx bx-right-arrow-alt', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] };
+        let patients = (await this.queryService.getAccountInfo())?.patients;
+        if (!patients) {
+            return;
+        }
+        this.menuItems = this.menuItems.map(item => {
+            if (item.title == 'Dashboard') {
+                item.submenu = [];
+                if (patients.length) {
+                    patients.forEach((p:User) => {
+                        let path = { path: `/dashboard/user-data/${p.id}`, title: `${p.name} ${p.last_name}`, icon: 'bx bx-right-arrow-alt', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] };
                         item.submenu.push(path);
                     })
                 }
-               // { path: '/dashboard/user-data', title: 'Daniel Perez', icon: 'bx bx-right-arrow-alt', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
+                // { path: '/dashboard/user-data', title: 'Daniel Perez', icon: 'bx bx-right-arrow-alt', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
             }
             return item;
         });
-        this.menuItems=[...this.menuItems];
-        $.getScript('./assets/js/app-sidebar.js');
+        this.menuItems = [...this.menuItems];
+    }
 
+    closeSession(){
+        this.queryService.closeSession();
     }
 
 }

@@ -50,11 +50,8 @@ const routes: Routes = [
       },
       //////////////
       {
-        path: 'user-data',
-        component: UserDataComponent,
-        data: {
-          title: 'Human Resources'
-        }
+        path: 'user-data/:user_id',
+        component: UserDataComponent
       },
     ],
     canActivate:[LoginGuard]
