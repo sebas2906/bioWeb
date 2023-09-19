@@ -5,14 +5,17 @@ import { PM6750GeneralData } from '../dashboard/user-data/types';
 import { json2csv } from 'json-2-csv';
 
 importScripts('https://cdn.jsdelivr.net/npm/chart.js')//chart js
-importScripts('https://unpkg.com/mqtt/dist/mqtt.min.js')//mqtt js
+importScripts('https://unpkg.com/mqtt@5.0.0/dist/mqtt.min.js')//mqtt js
 
 
 let last_package = '';
 let chart = [];
 let extended_buffer = [[], [], [], [], []];
+
 let canvas = [];
 let client: any;
+let buffer_counter = [0,0,0,0];
+let buffer_full=[false,false,false,false];
 
 let recorded_data = [];
 let is_recording = false;
@@ -86,10 +89,10 @@ addEventListener('message', async ({ data }) => {
   const { _canvas, _config, width, command, record, save, device_id } = data;
   if (device_id) {
     client.unsubscribe(topic_subscribed);
-    topic_subscribed='/sensor/pm6750/'+device_id;
+    topic_subscribed = '/sensor/pm6750/' + device_id;
     client.subscribe(topic_subscribed, function (err) {
       if (!err) {
-        console.log('Nuevo topico suscrito: ',topic_subscribed);
+        console.log('Nuevo topico suscrito: ', topic_subscribed);
         // client.publish('presence', 'Hello mqtt')
       }
     })
@@ -238,8 +241,9 @@ function dec2bin(dec) {
  * @param x_offset ofset en X
  */
 function printData(channel, data, chart, size, chart_select, x_offset = 0) {
-  limitBufferRange(extended_buffer[chart_select], data, size * 3);
-  chart[chart_select].data.datasets[0].data = extended_buffer[chart_select].slice((extended_buffer[chart_select].length - (extended_buffer[chart_select].length / 3)) - x_offset, extended_buffer[chart_select].length - x_offset);//almacenamos la ultima tercera parte
+  limitBufferRange(extended_buffer[chart_select], data, size,chart_select);
+ // limitBufferRangeReplace(extended_buffer[chart_select], data, size,buffer_counter[chart_select],buffer_full[chart_select]);
+  chart[chart_select].data.datasets[0].data = extended_buffer[chart_select];
 }
 
 // Función para convertir un arreglo de bytes en una cadena de caracteres hexadecimal
@@ -258,31 +262,60 @@ function convertToBinary(number: number) {
 }
 
 /**
- * Si el arreglo supera el limite definido entonces elimina el primer valor y agrega el siguiente al ultimo manteniendo el maximo valor
+ * Si el arreglo supera el limite definido entonces elimina el primer valor y agrega el siguiente al ultimo manteniendo el maximo numero de elementos
  * @param {number[]} buffer arreglo
  * @param {number} value el valor a asignar
  * @param {number} max_values maximo numero de elementos que debe contener el arreglo
  * @returns 
  */
-function limitBufferRange(buffer, value, max_values) {
-  if (buffer.length >= max_values) {
+function limitBufferRange(buffer, value, max_values, position) {
+  /* if (buffer_counter[position] >= max_values) {
+    //buffer.shift();
+    buffer_counter[position]=0;
+  }
+  buffer[buffer_counter[position]]=value;
+  for (let i = buffer_counter[position]+1; i < buffer_counter[position]+max_values*0.05; i++) {
+    buffer[i]=Math.min.apply(null,buffer);
+  }
+  buffer_counter[position]++;
+  console.log(buffer) */
+  if(buffer.length>=max_values){
     buffer.shift();
   }
   buffer.push(value);
+ // buffer.push(value);
+}
+
+/**
+ * Si el arreglo supera el limite definido entonces vueleve al inicio manteniendo el maximo numero de elementos
+ * @param {number[]} buffer arreglo
+ * @param {number} value el valor a asignar
+ * @param {number} max_values maximo numero de elementos que debe contener el arreglo
+ * @returns 
+ */
+function limitBufferRangeReplace(buffer, value, max_values, counter, buffer_full) {
+  if (counter >= max_values) {
+   // buffer_full=true;
+    counter=0;
+  } 
+  buffer[buffer_counter[0]]=value;
+  buffer_counter[0]++;
+    console.log(buffer)
+  // buffer.push(value);
 }
 
 function initMQTT() {
   client = (mqtt).connect('wss://mqtt.eclipseprojects.io/mqtt', {
-   // host: 'mqtt.eclipseprojects.io',
+    // host: 'mqtt.eclipseprojects.io',
     port: 443//80
   })
   client.on('connect', function () {
     console.log('%cMQTT server conectado', 'color: green');
-   /*  client.subscribe("/sensor/ecg007", function (err) {
-      if (!err) {
-        // client.publish('presence', 'Hello mqtt')
-      }
-    }) */
+    /*  client.subscribe("/sensor/ecg007", function (err) {
+       if (!err) {
+         // client.publish('presence', 'Hello mqtt')
+       }
+     }) */
     client.subscribe("/sensor/pm6750", function (err) {
       if (!err) {
         // client.publish('presence', 'Hello mqtt')

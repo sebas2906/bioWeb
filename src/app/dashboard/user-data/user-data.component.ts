@@ -57,7 +57,9 @@ export class UserDataComponent implements OnInit, AfterViewInit {
                 display: false
               },
               y: {
-                display: false
+                display: false,
+             /*    min: 860,
+                max: 930, */
               }
             },
             plugins: {
